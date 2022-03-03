@@ -1,4 +1,4 @@
-package com.minibanking.customer.api.testcustomerservice;
+package com.minibanking.customer.api.servicetests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -31,7 +31,7 @@ import com.minibanking.customer.api.service.CustomerService;
 import com.minibanking.customer.api.util.CustomerUtility;
 
 @ExtendWith(MockitoExtension.class)
-public class TestCustomerService {
+public class CustomerServiceTests {
 
 	@InjectMocks
 	CustomerService customerService;
@@ -122,9 +122,43 @@ public class TestCustomerService {
 		param.put("id", 1002022001L);		
 		when(restTemplate.getForObject("http://localhost:8082/customer/{id}/accounts", List.class, param)).thenReturn(accountList);
 		// call the actual unit to test and get output
+		customerService.setHostName("localhost");
+		customerService.setPort("8082");
 		customerService.deleteCustomer(1002022001L);
 		//validate the actual with the expected
 		verify(customerRepository).deleteById(1002022001L);
+	}
+	
+	@Test
+	public void testInvalidDeleteCustomer() {
+		Customer customer = new Customer(1002022001L,"sam","1978-04-03","Melbourne","9847878986","sam@klf.com","DL","298498");
+		Account account = Account.builder()
+				.acNo(2002022001L)
+				.acType("Savings")
+				.balance(0L)
+				.bsb("23487998")
+				.customerId(1002022001L)
+				.payId("20748384")
+				.status("ACTIVE").build();
+		List<Account> accountList = new ArrayList<>();
+		accountList.add(account);
+		
+		when(customerRepository.findById(1002022001L)).thenReturn(Optional.of(customer));
+		
+		Map<String, Long> param = new HashMap<>();
+		param.put("id", 1002022001L);		
+		when(restTemplate.getForObject("http://localhost:8082/customer/{id}/accounts", List.class, param)).thenReturn(accountList);
+		CustomerException response = null;
+		try {
+			customerService.setHostName("localhost");
+			customerService.setPort("8082");
+			customerService.deleteCustomer(1002022001L);
+			
+			} catch(CustomerException e) {
+		
+			response = e;
+    	  }
+		assertEquals("Cannot delete customer with accounts,delete accounts first ",response.getMessage());
 	}
 	
 }

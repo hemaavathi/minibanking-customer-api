@@ -9,12 +9,14 @@ import javax.validation.constraints.Pattern.Flag;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CustomerRequest {
 	
 @NotBlank(message = "Name cannot be empty")

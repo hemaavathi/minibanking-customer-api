@@ -1,4 +1,4 @@
-package com.minibanking.customer.api.testcustomercontroller;
+package com.minibanking.customer.api.controllertests;
 
 import static org.hamcrest.CoreMatchers.isA;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
@@ -28,7 +28,7 @@ import com.minibanking.customer.api.model.CustomerRequest;
 import com.minibanking.customer.api.service.CustomerService;
 
 @WebMvcTest(CustomerController.class)
-public class TestCustomerController {
+public class CustomerControllerTests {
 
 	@MockBean
 	CustomerService customerService;

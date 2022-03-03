@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -26,6 +27,12 @@ public class CustomerService {
 	
 	@Autowired
 	private CustomerRepository customerRepository;
+	
+	@Value("${accountservice.hostname:localhost}")
+	private String hostname;
+	
+	@Value("${accountservice.port:8082}")
+	private String port;
 	
 	
 	public List<Customer> getAllCustomers(){
@@ -69,7 +76,7 @@ public class CustomerService {
 			Map<String, Long> param = new HashMap<>();
 			param.put("id", id);
 			try {
-				List response = restTemplate.getForObject("http://localhost:8082/customer/{id}/accounts", List.class, param);
+				List response = restTemplate.getForObject("http://" + hostname + ":" + port + "/customer/{id}/accounts", List.class, param);
 				if(response != null && response.size() == 0) {
 					customerRepository.deleteById(id);
 				} else {
@@ -82,5 +89,15 @@ public class CustomerService {
 		} else {			
 			throw new CustomerException(2000,"Customer not found", HttpStatus.NOT_FOUND);
 		}
+	}
+	// The below methods will be used for test cases to inject properties
+		// from test classes as a workaround solution.
+	
+	public void setHostName(String hostname) {
+		this.hostname = hostname;
+	}
+	
+	public void setPort(String port) {
+		this.port = port;
 	}
 }
