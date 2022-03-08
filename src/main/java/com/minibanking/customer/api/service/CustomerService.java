@@ -28,10 +28,10 @@ public class CustomerService {
 	@Autowired
 	private CustomerRepository customerRepository;
 	
-	@Value("${accountservice.hostname:localhost}")
+	@Value("${accountservice.hostname}")
 	private String hostname;
 	
-	@Value("${accountservice.port:8082}")
+	@Value("${accountservice.port}")
 	private String port;
 	
 	
