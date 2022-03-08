@@ -1,4 +1,4 @@
-CREATE TABLE `customer` (
+CREATE TABLE IF NOT EXISTS `customer` (
   `id` int NOT NULL,
   `name` varchar(45) NOT NULL,
   `dob` date NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE `customer` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `customer_id` (
+CREATE TABLE IF NOT EXISTS  `customer_id` (
   `next_val` int NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`next_val`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1002022030 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

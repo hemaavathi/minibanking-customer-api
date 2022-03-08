@@ -1,0 +1,2 @@
+INSERT IGNORE INTO customer_id (next_val)
+VALUES (1002022001);
